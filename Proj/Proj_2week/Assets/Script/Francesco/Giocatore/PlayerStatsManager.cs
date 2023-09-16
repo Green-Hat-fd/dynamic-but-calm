@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatsManager : MonoBehaviour
+public class PlayerStatsManager : MonoBehaviour, IDamageable
 {
     [SerializeField] PlayerStatsSO_Script stats_SO;
     
@@ -15,12 +15,23 @@ public class PlayerStatsManager : MonoBehaviour
         //Quando devo utilizzare il powerup
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            //TODO: usa il powerup
+            PowerUp used_PU = stats_SO.UsePowerUp();
+
+            //TODO: sistema
+            //
+            //used_PU.Activate();
+        }
+
+
+        //Quando muore
+        if (isDead)
+        {
+            ;
         }
     }
 
 
-    public void DamagePlayer()
+    public void Die()
     {
         isDead = true;
     }

@@ -255,8 +255,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerVel: 7.5
-  jumpPower: 8.5
-  limitGroundCheck: 0.5
+  jumpPower: 10
+  limitGroundCheck: 0.05
+  radiusSpherecast: 0
+  boxcastDim: {x: 0.9, y: 0.1}
 --- !u!50 &178290891
 Rigidbody2D:
   serializedVersion: 4
@@ -272,12 +274,12 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDrag: 0
   m_AngularDrag: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2
   m_Material: {fileID: 0}
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!70 &178290892
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -474,7 +476,7 @@ GameObject:
   - component: {fileID: 1701626141}
   - component: {fileID: 1701626140}
   - component: {fileID: 1701626139}
-  m_Layer: 0
+  m_Layer: 4
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
