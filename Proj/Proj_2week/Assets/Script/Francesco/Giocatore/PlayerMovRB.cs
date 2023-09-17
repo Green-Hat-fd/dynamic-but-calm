@@ -15,9 +15,9 @@ public class PlayerMovRB : MonoBehaviour
 
     [Space(20)]
     [Min(0)]
-    [SerializeField] float limitGroundCheck = 0.25f;
+    [SerializeField] float limitGroundCheck = 0.05f;
+    [SerializeField] Vector2 boxcastDim = new Vector2(0.9f, 0.1f);
     float halfPlayerHeight;
-    float radiusSpherecast = 0.25f;
 
     bool isOnGround = false;
     bool hasJumped = false;
@@ -56,20 +56,19 @@ public class PlayerMovRB : MonoBehaviour
 
     void FixedUpdate()
     {
-        //TODO: sistema il salto / ground check
-
         //Calcolo se si trova a terra
-        //("~0" significa che collide con tutti i layer)
-        hitBase = Physics2D.CircleCast(transform.position + (-transform.up * (halfPlayerHeight + limitGroundCheck)),
-                                       radiusSpherecast,
-                                       -transform.up,
-                                       /*halfPlayerHeight + limitGroundCheck*/ + radiusSpherecast,
-                                       ~0);
+        Vector3 cast_ToAdd = -transform.up * (halfPlayerHeight + limitGroundCheck);
         
-        isOnGround = hitBase.transform != null;
+        hitBase = Physics2D.BoxCast(transform.position + cast_ToAdd,
+                                    boxcastDim,
+                                    0,
+                                    -transform.up,
+                                    boxcastDim.y);
+        isOnGround = hitBase;
 
 
-        float airVelMultip = !isOnGround ? 0.65f : 1;   //Diminuisce la velocita' orizz. se si trova in aria
+        //Diminuisce la velocita' orizz. se si trova in aria
+        float velMultip_air = !isOnGround ? 0.65f : 1;
 
 
         //Salta se premi Spazio e si trova a terra
@@ -91,7 +90,7 @@ public class PlayerMovRB : MonoBehaviour
             &&
             (rb.velocity.x >= 0.05f || rb.velocity.y >= 0.05f))
         {
-            rb.AddForce(new Vector3(-rb.velocity.x * 0.1f, 0, -rb.velocity.y * 0.1f), ForceMode2D.Force);
+            rb.AddForce(new Vector2(-rb.velocity.x * 0.1f, 0), ForceMode2D.Force);
         }
 
 
@@ -104,8 +103,8 @@ public class PlayerMovRB : MonoBehaviour
         if (horizVel.magnitude >= playerVel)
         {
             //Limita la velocita' a quella prestabilita, riportandola al RigidBody
-            Vector2 limitazione = horizVel.normalized * playerVel * airVelMultip;
-            rb.velocity = new Vector2(limitazione.x, rb.velocity.y);
+            Vector2 limit = horizVel.normalized * playerVel * velMultip_air;
+            rb.velocity = new Vector2(limit.x, rb.velocity.y);
         }
 
         #endregion
@@ -148,12 +147,12 @@ public class PlayerMovRB : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Disegna lo SphereCast per capire se e' a terra o meno (togliendo l'altezza del giocatore)
+        //Disegna il CubeCast per capire se e' a terra o meno (togliendo l'altezza del giocatore)
         Gizmos.color = new Color(0.85f, 0.85f, 0.85f, 1);
-        Gizmos.DrawWireSphere(transform.position + (-transform.up * halfPlayerHeight)
-                               + (-transform.up * limitGroundCheck)
-                               - (-transform.up * radiusSpherecast),
-                              radiusSpherecast);
+        Gizmos.DrawWireCube(transform.position + (-transform.up * halfPlayerHeight)
+                             + (-transform.up * limitGroundCheck)
+                             - (transform.up * (boxcastDim.y/2)),
+                            (Vector3)boxcastDim + Vector3.forward);
 
         //Disegna dove ha colpito se e' a terra e se ha colpito un'oggetto solido (no trigger)
         Gizmos.color = Color.green;
