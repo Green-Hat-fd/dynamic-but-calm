@@ -18,7 +18,7 @@ public class PlayerStatsSO_Script : ScriptableObject
     /// <returns></returns>
     public bool PickUpPowerUp(PowerUp powUp)
     {
-        //Se non c'è già un power-up messo da parte...
+        //Se non c'e' gia' un power-up messo da parte...
         if (powerUp_toUse == null)
         {
             //Aggiunge il power-up a quello messo da parte

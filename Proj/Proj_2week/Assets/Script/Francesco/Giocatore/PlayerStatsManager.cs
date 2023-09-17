@@ -8,6 +8,9 @@ public class PlayerStatsManager : MonoBehaviour, IDamageable
     
     bool isDead;
 
+    [Header("—— Feedback ——")]
+    [SerializeField] AudioSource deathSfx;
+
 
 
     void Update()
@@ -34,5 +37,12 @@ public class PlayerStatsManager : MonoBehaviour, IDamageable
     public void Die()
     {
         isDead = true;
+
+
+        #region Feedback
+
+        deathSfx.Play();
+
+        #endregion
     }
 }
