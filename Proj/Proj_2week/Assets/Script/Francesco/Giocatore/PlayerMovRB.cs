@@ -25,6 +25,9 @@ public class PlayerMovRB : MonoBehaviour
     RaycastHit2D hitBase;
     RaycastHit2D slopeHit;
 
+    [Header("—— Feedback ——")]
+    [SerializeField] SpriteRenderer playerSpr;
+
 
 
     private void Awake()
@@ -52,6 +55,21 @@ public class PlayerMovRB : MonoBehaviour
         //Prende l'input di salto
         //hasJumped = GameManager.inst.inputManager.Giocatore.Salto.ReadValue<float>() > 0;
         hasJumped = Input.GetKeyDown(KeyCode.Space) || Input.GetKey(KeyCode.Space);
+
+
+
+        #region Feedback
+
+        bool isMoving = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D);
+
+
+        if (isMoving)    //Se sta continuando a muoversi...
+        {
+            //Flip lo sprite solo quando si muove verso sinistra
+            playerSpr.flipX = xMov < 0;
+        }   
+
+        #endregion
     }
 
     void FixedUpdate()
