@@ -369,7 +369,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b49991093107ab4439e389b5f3115dcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCamera: {fileID: 519420032}
+  playerCam: {fileID: 519420031}
   parallaxDist: {x: 5, y: 60}
   parallaxObjs:
   - obj: {fileID: 1142827241}
