@@ -42,8 +42,9 @@ public class ParallaxManager : MonoBehaviour
     #endregion
 
 
-    [SerializeField] Transform playerCamera;
+    [SerializeField] Camera playerCam;
     [SerializeField] Vector2 parallaxDist = new Vector2(10, 60);
+    Transform playerCam_tr;
     
     [Space(20)]
     [SerializeField] List<Parallax_Class> parallaxObjs;
@@ -56,6 +57,9 @@ public class ParallaxManager : MonoBehaviour
     
     private void Awake()
     {
+        playerCam_tr = playerCam.transform;
+
+
         foreach (Parallax_Class parObj in parallaxObjs)
         {
             //Aggiorna la distanza della posizione
@@ -67,32 +71,31 @@ public class ParallaxManager : MonoBehaviour
             //la sua distanza dalla telecamera
             float _boxDim = parallaxDist.y - parallaxDist.x;
 
-            Vector3 start = playerCamera.position + playerCamera.forward * parallaxDist.x,
+            Vector3 start = playerCam_tr.position + playerCam_tr.forward * parallaxDist.x,
                     end = parObj.obj.position;
             float distFromCamera = Vector3.Distance(start, end);
 
-            float finalVal = distFromCamera / _boxDim; 
-            finalVal = Mathf.Clamp01(finalVal);    //Limita il valore tra 0 e 1
+            float finalMoltVal = Mathf.Clamp01(distFromCamera / _boxDim);    //Limitando il moltiplicatore tra 0 e 1
 
-            parObj.SetSpeedMultiplier(finalVal);
+            parObj.SetSpeedMultiplier(finalMoltVal);
 
 
             //Sets the object to the 
-            if (finalVal >= 1)
-                parObj.obj.parent = playerCamera.transform;
+            if (finalMoltVal >= 1)
+                parObj.obj.parent = playerCam_tr;
         }
     }
     
     void FixedUpdate()
     {
-        Vector3 camRight = new Vector3(playerCamera.position.x, 0);
+        Vector3 camRight = new Vector3(playerCam_tr.position.x, 0);
 
         //Fa muovere ogni oggetto nella lista
         //piu' lentamente se si trova piu' lontano
         foreach (Parallax_Class parObj in parallaxObjs)
         {
             if(parObj.GetSpeedMultiplier() < 1)
-             parObj.UpdatePosition(camRight / parObj.GetSpeedMultiplier());
+                parObj.UpdatePosition(camRight / parObj.GetSpeedMultiplier());
         }
     }
 
@@ -136,9 +139,10 @@ public class ParallaxManager : MonoBehaviour
     {
         float _halfDist = (parallaxDist.y - parallaxDist.x) / 2;
 
-        Vector3 _pos = playerCamera.position
-                        + playerCamera.forward * parallaxDist.x
-                        + playerCamera.forward * _halfDist,
+        Transform _playerCam_tr = playerCam.transform;
+        Vector3 _pos = _playerCam_tr.position
+                        + _playerCam_tr.forward * parallaxDist.x
+                        + _playerCam_tr.forward * _halfDist,
                 _dim = new Vector3(Screen.currentResolution.width * 0.005f,
                                    Screen.currentResolution.height * 0.005f,
                                    _halfDist * 2);
