@@ -26,7 +26,7 @@ public class PlayerMovRB : MonoBehaviour
     RaycastHit2D slopeHit;
 
     [Header("—— Feedback ——")]
-    [SerializeField] SpriteRenderer playerSpr;
+    [SerializeField] GameObject playerObj;
 
 
 
@@ -65,8 +65,8 @@ public class PlayerMovRB : MonoBehaviour
 
         if (isMoving)    //Se sta continuando a muoversi...
         {
-            //Flip lo sprite solo quando si muove verso sinistra
-            playerSpr.flipX = xMov < 0;
+            // flippa il gameObject se si muove verso sinistra, e torna normale se ti muovi a destra
+            playerObj.transform.rotation = xMov < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
         }   
 
         #endregion

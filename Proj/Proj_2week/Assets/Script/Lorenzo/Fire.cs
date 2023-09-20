@@ -18,10 +18,10 @@ public class Fire : MonoBehaviour
 
     void Shoot()
     {
-        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+        GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.localRotation);
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
-        rb.velocity = transform.up * bulletSpeed;
+        rb.velocity = firePoint.transform.right * bulletSpeed;
     }
 }
