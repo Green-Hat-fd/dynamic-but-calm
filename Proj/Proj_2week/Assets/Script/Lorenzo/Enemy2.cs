@@ -19,13 +19,6 @@ public class Enemy2 : MonoBehaviour
             // Calcola la direzione verso il giocatore
             Vector3 direction = (player.position - transform.position).normalized;
 
-            // Calcola la rotazione per guardare nella direzione del giocatore
-            Quaternion rotation = Quaternion.LookRotation(Vector3.forward, direction);
-
-            // Applica la rotazione al nemico
-            transform.rotation = rotation;
-
-
             Shoot();
 
             nextFireTime = Time.time + 1f / fireRate;
