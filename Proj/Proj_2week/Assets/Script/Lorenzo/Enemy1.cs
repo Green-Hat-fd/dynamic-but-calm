@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy1 : MonoBehaviour, IDamageable
+public class Enemy1 : MonoBehaviour, IEnemy
 {
     public Transform[] patrolPoints;
     private int currentPatrolPoint = 0;
@@ -31,6 +31,19 @@ public class Enemy1 : MonoBehaviour, IDamageable
     {
         Vector3 direction = (patrolPoints[currentPatrolPoint].position - transform.position).normalized;
         transform.position += direction * movementSpeed * Time.deltaTime;
+    }
+
+    public void OnTriggerEnter2D(Collider2D collision)
+    {
+        IPlayer playerCheck = collision.GetComponent<IPlayer>();
+
+        if (playerCheck == null)
+        {
+            return;
+        }
+
+        // elimina il giocatore
+        playerCheck.Die();
     }
 
     public void Die()
