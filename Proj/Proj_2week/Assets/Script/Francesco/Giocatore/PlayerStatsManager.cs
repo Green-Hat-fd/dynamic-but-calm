@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerStatsManager : MonoBehaviour, IDamageable
 {
     [SerializeField] PlayerStatsSO_Script stats_SO;
-    
+    public bool isDamageable = true;
     bool isDead;
 
     [Header("—— Feedback ——")]
