@@ -22,7 +22,7 @@ public class BigScaryWallScript : MonoBehaviour
     {
         //Controllo se cio' che e'
         //entrato puo' prendere danno
-        IDamageable damageCheck = collision.GetComponent<IDamageable>();
+        IEnemy damageCheck = collision.GetComponent<IEnemy>();
 
         if (damageCheck != null)
         {

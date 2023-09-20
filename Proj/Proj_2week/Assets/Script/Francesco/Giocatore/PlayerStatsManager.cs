@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerStatsManager : MonoBehaviour, IDamageable
+public class PlayerStatsManager : MonoBehaviour, IPlayer
 {
     [SerializeField] PlayerStatsSO_Script stats_SO;
     public bool isDamageable = true;
@@ -33,11 +33,10 @@ public class PlayerStatsManager : MonoBehaviour, IDamageable
         }
     }
 
-
     public void Die()
     {
         isDead = true;
-
+        Destroy(gameObject);
 
         #region Feedback
 
@@ -45,4 +44,6 @@ public class PlayerStatsManager : MonoBehaviour, IDamageable
 
         #endregion
     }
+
+    
 }
