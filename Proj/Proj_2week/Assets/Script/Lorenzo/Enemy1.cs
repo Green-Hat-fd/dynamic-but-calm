@@ -7,7 +7,7 @@ public class Enemy1 : MonoBehaviour, IEnemy
 {
     public Transform[] patrolPoints;
     private int currentPatrolPoint = 0;
-    private float movementSpeed = 5.0f; // Velocità di movimento del nemico
+    private float movementSpeed = 3.0f; // Velocità di movimento del nemico
 
     private void Start()
     {

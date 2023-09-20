@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyBullet : MonoBehaviour
 {
-    public int life;
+    private float life = 2f;
 
     private void Start()
     {
@@ -25,8 +25,15 @@ public class EnemyBullet : MonoBehaviour
         Destroy(gameObject);
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    private void OnCollisionEnter2D(Collider2D collision)
     {
+        IEnemy playerCheck = collision.GetComponent<IEnemy>();
+
+        if (playerCheck != null)
+        {
+            return;
+        }
+
         Destroy(gameObject);
     }
 }
