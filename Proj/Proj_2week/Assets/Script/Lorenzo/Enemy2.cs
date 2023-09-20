@@ -6,15 +6,21 @@ public class Enemy2 : MonoBehaviour, IEnemy
 {
     public Transform player; 
     public GameObject bulletPrefab; 
-    public float fireRate = 2f; 
-    public float bulletSpeed = 10f; 
+    private float fireRate = 1f; 
+    private float bulletSpeed = 10f; 
     public Transform firePoint;
 
     private float nextFireTime; 
 
     void Update()
     {
-        if (Time.time >= nextFireTime)
+        // Calcola la distanza tra il nemico e il giocatore
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        // Imposta una distanza massima a cui il nemico può sparare
+        float maxShootDistance = 10f; 
+
+        if (distanceToPlayer <= maxShootDistance && Time.time >= nextFireTime)
         {
             // Calcola la direzione verso il giocatore
             Vector3 direction = (player.position - transform.position).normalized;
