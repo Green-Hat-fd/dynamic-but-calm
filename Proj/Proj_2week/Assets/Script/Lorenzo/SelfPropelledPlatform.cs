@@ -52,7 +52,6 @@ public class SelfPropelledPlatform : MonoBehaviour
 
             playerIsOnPlatform = true; // Il giocatore è salito sulla piattaforma
             playerTransform = collision.transform;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -66,6 +65,5 @@ public class SelfPropelledPlatform : MonoBehaviour
 
             playerIsOnPlatform = false; // Il giocatore è sceso dalla piattaforma
             playerTransform.parent = null; // Rimuove il parent
-        }
     }
 }
