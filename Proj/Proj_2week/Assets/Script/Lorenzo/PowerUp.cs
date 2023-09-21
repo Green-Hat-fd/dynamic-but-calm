@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUp : MonoBehaviour
 {
     private Vector3 startPos; // posizione di partenza del power-up
-
+    
     private void Start()
     {
         startPos = transform.position;
@@ -22,11 +22,14 @@ public class PowerUp : MonoBehaviour
 
     public void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.CompareTag("Player"))
-        {
-            // raccogli l'oggetto 
+        IPlayer playerCheck = collision.GetComponent<IPlayer>();
 
-            Destroy(gameObject);
+        if(playerCheck == null)
+        {
+            return;
         }
+
+        // raccogli l'oggetto
+        Destroy(gameObject);
     }
 }

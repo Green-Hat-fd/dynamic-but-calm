@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelfPropelledPlatform : MonoBehaviour, IPlayer
+public class SelfPropelledPlatform : MonoBehaviour
 {
     public Transform[] pathPoints; // array di posizioni
     private int currentPathPoint = 0;
@@ -43,8 +43,13 @@ public class SelfPropelledPlatform : MonoBehaviour, IPlayer
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        IPlayer playerCheck = collision.GetComponent<IPlayer>();
+
+        if (playerCheck == null)
         {
+            return;
+        }
+
             playerIsOnPlatform = true; // Il giocatore è salito sulla piattaforma
             playerTransform = collision.transform;
         }
@@ -52,8 +57,13 @@ public class SelfPropelledPlatform : MonoBehaviour, IPlayer
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        IPlayer playerCheck = collision.GetComponent<IPlayer>();
+
+        if (playerCheck == null)
         {
+            return;
+        }
+
             playerIsOnPlatform = false; // Il giocatore è sceso dalla piattaforma
             playerTransform.parent = null; // Rimuove il parent
         }
