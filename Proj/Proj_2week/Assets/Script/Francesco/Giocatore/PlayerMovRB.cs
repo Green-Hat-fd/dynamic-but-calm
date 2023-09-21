@@ -61,12 +61,14 @@ public class PlayerMovRB : MonoBehaviour
         #region Feedback
 
         bool isMoving = Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.D);
+        Quaternion leftRot = Quaternion.Euler(0, 180, 0),
+                   rightRot = Quaternion.identity;
 
 
         if (isMoving)    //Se sta continuando a muoversi...
         {
             // flippa il gameObject se si muove verso sinistra, e torna normale se ti muovi a destra
-            playerObj.transform.rotation = xMov < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.identity;
+            playerObj.transform.rotation = xMov < 0 ? leftRot : rightRot;
         }   
 
         #endregion
