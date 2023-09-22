@@ -48,6 +48,7 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     public void Die()
     {
-        Destroy(gameObject);
+        // distrugge il genitore
+        Destroy(gameObject.transform.parent.gameObject);
     }
 }

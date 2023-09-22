@@ -4,6 +4,29 @@ using UnityEngine;
 
 public class PlayerStatsManager : MonoBehaviour, IPlayer
 {
+    [System.Serializable]
+    class ObjToDesaturate_Class
+    {
+        public SpriteRenderer objToDesaturate;
+        public Sprite desaturatedSprite;
+               Sprite normalSprite;
+
+        public void GetNormalSprite()
+        {
+            normalSprite = objToDesaturate.sprite;
+        }
+
+        public void Saturate()
+        {
+            objToDesaturate.sprite = normalSprite;
+        }
+
+        public void DeSaturate()
+        {
+            objToDesaturate.sprite = desaturatedSprite;
+        }
+    }
+
     [SerializeField] PlayerStatsSO_Script stats_SO;
     public bool isDamageable = true;
     bool isDead;
@@ -16,10 +39,21 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [SerializeField] AudioSource deathSfx;
     [SerializeField] Canvas deathCanvas;
 
+    [Space(20)]
+    [SerializeField] List<ObjToDesaturate_Class> objToDesaturate;
+
     [Header("—— DEBUG ——")]
     [SerializeField] float deathZoneSize = 15;
 
 
+
+    private void Awake()
+    {
+        foreach (var obj in objToDesaturate)
+        {
+            obj.GetNormalSprite();
+        }
+    }
 
     void Update()
     {
@@ -55,6 +89,26 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         deathSfx.Play();
 
         #endregion
+    }
+
+
+    public void SaturateAllSprites()
+    {
+        //Per ogni sprite (prop, nemici, ecc...)
+        //li satura
+        foreach (var obj in objToDesaturate)
+        {
+            obj.Saturate();
+        }
+    }
+    public void DeSaturateAllSprites()
+    {
+        //Per ogni sprite (prop, nemici, ecc...)
+        //li de-satura
+        foreach (var obj in objToDesaturate)
+        {
+            obj.DeSaturate();
+        }
     }
 
 
