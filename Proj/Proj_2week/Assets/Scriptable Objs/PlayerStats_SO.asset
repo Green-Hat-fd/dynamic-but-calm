@@ -12,3 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9bf246e4d460d40b8f01d1284cbdf4, type: 3}
   m_Name: PlayerStats_SO
   m_EditorClassIdentifier: 
+  score: 0
+  howManyCollectableTaken: 0
+  maxCollectableToTake: 3
+  powerUp_toUse: {fileID: 0}
+  activePowerUp: {fileID: 0}

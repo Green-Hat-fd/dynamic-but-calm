@@ -5,10 +5,14 @@ using UnityEngine;
 [CreateAssetMenu(menuName = "Scriptable Objects/Player Stats (S.O.)", fileName = "PlayerStats_SO")]
 public class PlayerStatsSO_Script : ScriptableObject
 {
-    int score;
-    bool isCollectableTaken;
-    PowerUp powerUp_toUse;
-    PowerUp activePowerUp;
+    [SerializeField] int score;
+    [SerializeField] int howManyCollectableTaken = 0;
+    [Range(1, 5)]
+    [SerializeField] int maxCollectableToTake = 3;
+
+    [Space(20)]
+    [SerializeField] PowerUp powerUp_toUse;
+    [SerializeField] PowerUp activePowerUp;
 
 
     /// <summary>
@@ -59,13 +63,39 @@ public class PlayerStatsSO_Script : ScriptableObject
 
 
 
+    public bool AddPowerUp_toUse(PowerUp newPowUp)
+    {
+        //Raccoglie il power-up solo se è vuoto
+        if(powerUp_toUse == null)
+        {
+            powerUp_toUse = newPowUp;
+
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
     public void AddScore(int scoreToAdd)
     {
         score += scoreToAdd;
     }
 
-    public void SetIsCollectableTaken(bool value)
+    public int GetHowManyCollectableTaken()
     {
-        isCollectableTaken = value;
+        return howManyCollectableTaken;
+    }
+
+    public void AddCollectableTaken()
+    {
+        if(howManyCollectableTaken <= maxCollectableToTake)
+            howManyCollectableTaken++;
+    }
+
+    public void ResetCollectableTaken()
+    {
+        howManyCollectableTaken = 0;
     }
 }

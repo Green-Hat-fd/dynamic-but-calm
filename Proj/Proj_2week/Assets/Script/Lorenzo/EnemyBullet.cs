@@ -14,26 +14,17 @@ public class EnemyBullet : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         IPlayer playerCheck = collision.GetComponent<IPlayer>();
+        IEnemy enemyCheck = collision.GetComponent<IEnemy>();
 
-        if (playerCheck == null)
+
+        if (enemyCheck != null || playerCheck == null)
         {
+            Destroy(gameObject);
             return;
         }
 
         // elimina il giocatore
         playerCheck.Die();
-        Destroy(gameObject);
-    }
-
-    private void OnCollisionEnter2D(Collider2D collision)
-    {
-        IEnemy playerCheck = collision.GetComponent<IEnemy>();
-
-        if (playerCheck != null)
-        {
-            return;
-        }
-
         Destroy(gameObject);
     }
 }

@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class PowerUpTimer : PowerUp
 {
+    private PlayerMovRB playerMovScr;
     private float timeSpeed;
+
+    private void Awake()
+    {
+        playerMovScr = FindObjectOfType<PlayerMovRB>();
+    }
 
     public void SlowsTime()
     {
@@ -18,6 +24,7 @@ public class PowerUpTimer : PowerUp
         Time.timeScale = timeSpeed;
 
         // funzione per raddoppiare velocita
+        playerMovScr.SetPlayerSpeedMultip(2);
 
         yield return new WaitForSeconds(2f);
 
@@ -25,6 +32,7 @@ public class PowerUpTimer : PowerUp
 
         Time.timeScale = timeSpeed;
 
-       // funzione per ripristinare la velocita
+        // funzione per ripristinare la velocita
+        playerMovScr.ResetPlayerSpeedMultip();
     }
 }

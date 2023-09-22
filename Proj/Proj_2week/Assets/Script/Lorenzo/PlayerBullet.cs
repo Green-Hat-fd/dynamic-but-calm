@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerBullet : MonoBehaviour
 {
-    public int life;
+    public float life;
 
     private void Start()
     {
@@ -13,15 +13,15 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IEnemy playerCheck = collision.GetComponent<IEnemy>();
+        IEnemy enemyCheck = collision.GetComponent<IEnemy>();
 
-        if (playerCheck == null)
+        if (enemyCheck == null)
         {
             return;
         }
 
         // elimina il giocatore
-        playerCheck.Die();
+        enemyCheck.Die();
         Destroy(gameObject);
     }
 
