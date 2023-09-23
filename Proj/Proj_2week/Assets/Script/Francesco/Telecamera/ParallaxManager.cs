@@ -10,22 +10,26 @@ public class ParallaxManager : MonoBehaviour
     public class Parallax_Class
     {
         public Transform obj;
-        public bool canReplicate_TODO_RENAME = true;
-        [Range(1, 100)]
-        public int manymany_TODO_RENAME;
+        public bool canSpawnMultiple = true;
 
+        float _spriteLength;
         Vector3 _startPos;
-        public float _speedMult;
+        float _speedMult;
 
 
         public void SetPositionAtStart()
         {
             _startPos = obj.position;
+            _spriteLength = obj.GetComponent<SpriteRenderer>().bounds.size.x;
         }
 
 
         public float GetXPosition() => _startPos.x;
+        public float GetSpriteLength() => _spriteLength;
         public float GetSpeedMultiplier() => _speedMult;
+
+        public float GetRightSpriteCenter() => GetXPosition() + _spriteLength;
+        public float GetLeftSpriteCenter() => GetXPosition() - _spriteLength;
 
 
         public void SetSpeedMultiplier(float value)
@@ -33,9 +37,18 @@ public class ParallaxManager : MonoBehaviour
             _speedMult = value;
         }
 
-        public void UpdatePosition(Vector3 posToSubtract)
+        public void UpdatePosition(Vector3 posToAdd)
         {
-            obj.position = _startPos - posToSubtract;
+            obj.position = _startPos + posToAdd;
+        }
+
+        public void MoveToRightSide()
+        {
+            _startPos.x += _spriteLength;
+        }
+        public void MoveToLeftSide()
+        {
+            _startPos.x -= _spriteLength;
         }
     }
 
@@ -43,7 +56,7 @@ public class ParallaxManager : MonoBehaviour
 
 
     [SerializeField] Camera playerCam;
-    [SerializeField] Vector2 parallaxDist = new Vector2(10, 60);
+    [SerializeField] Vector2 parallaxDist = new Vector2(5, 60);
     Transform playerCam_tr;
     
     [Space(20)]
@@ -80,9 +93,38 @@ public class ParallaxManager : MonoBehaviour
             parObj.SetSpeedMultiplier(finalMoltVal);
 
 
-            //Sets the object to the 
+            //Mette gli oggetti che sono fissi
+            //come figli della telecamera del giocat.
             if (finalMoltVal >= 1)
                 parObj.obj.parent = playerCam_tr;
+
+
+
+            #region Creazione degli sprite a destra e sinistra
+
+            if (parObj.canSpawnMultiple)    //Se ne può creare più di 1...
+            {
+                //Crea il figlio destro e sinistro,
+                //e li mette figli dell'oggetto del parallasse
+                Transform childRight = Instantiate(parObj.obj),
+                          childLeft = Instantiate(parObj.obj);
+
+                childRight.parent = parObj.obj;
+                childLeft.parent = parObj.obj;
+
+                childRight.name += " (Dx)";
+                childLeft.name += " (Sx)";
+
+
+                //Calcola la distanza dello sprite e li
+                //mette a destra e sinistra dell'originale
+                Vector3 spriteLgt_right = parObj.obj.right * parObj.GetSpriteLength();
+
+                childRight.position += spriteLgt_right;
+                childLeft.position -= spriteLgt_right;
+            }
+
+            #endregion
         }
     }
     
@@ -95,7 +137,21 @@ public class ParallaxManager : MonoBehaviour
         foreach (Parallax_Class parObj in parallaxObjs)
         {
             if(parObj.GetSpeedMultiplier() < 1)
-                parObj.UpdatePosition(camRight / parObj.GetSpeedMultiplier());
+                parObj.UpdatePosition(camRight * parObj.GetSpeedMultiplier());
+
+
+            //Prende la posizione della telecamera rispetto allo sprite,
+            //calcola se si trova al centro dello sprite destro o sinistro...
+            float camPos_toSprite = camRight.x * (1 - parObj.GetSpeedMultiplier());
+            bool isOnRightSprite = camPos_toSprite > parObj.GetRightSpriteCenter(),
+                 isOnLeftSprite  = camPos_toSprite < parObj.GetLeftSpriteCenter();
+
+            //...E lo sistema nel lato corrispondente
+            if (isOnRightSprite)
+                parObj.MoveToRightSide();
+            else 
+                if (isOnLeftSprite)
+                    parObj.MoveToLeftSide();
         }
     }
 
@@ -107,16 +163,6 @@ public class ParallaxManager : MonoBehaviour
         //Rende sempre la X come il minimo
         //e la Y come il massimo
         parallaxDist.x = Mathf.Clamp(parallaxDist.x, 0, parallaxDist.y);
-
-        //Rimuove il numero di quanti
-        //ne deve creare dell'Inspector
-        foreach (Parallax_Class parObj in parallaxObjs)
-        {
-            if (!parObj.canReplicate_TODO_RENAME)
-            {
-                parObj.manymany_TODO_RENAME = 0;
-            }
-        }
     }
 
     #endregion
