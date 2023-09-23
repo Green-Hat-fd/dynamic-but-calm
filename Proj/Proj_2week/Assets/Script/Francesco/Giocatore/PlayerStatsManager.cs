@@ -27,6 +27,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         }
     }
 
+    DeathManager deathMng;
+
     [SerializeField] PlayerStatsSO_Script stats_SO;
     public bool isDamageable = true;
     bool isDead;
@@ -49,6 +51,9 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
     private void Awake()
     {
+        deathMng = FindObjectOfType<DeathManager>();
+
+
         foreach (var obj in objToDesaturate)
         {
             obj.GetNormalSprite();
@@ -78,7 +83,9 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     public void Die()
     {
         isDead = true;
-        Destroy(gameObject);
+        Destroy(gameObject);    //Toglie il giocatore
+
+        deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
 
         #region Feedback
 
@@ -110,6 +117,9 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
             obj.DeSaturate();
         }
     }
+
+
+    public bool GetIsDead() => isDead;
 
 
 
