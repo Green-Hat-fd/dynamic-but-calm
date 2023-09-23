@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
+    [SerializeField] PlayerStatsSO_Script stats_SO;
     private Vector3 startPos; // posizione di partenza del power-up
     
     private void Start()
@@ -30,6 +31,11 @@ public class PowerUp : MonoBehaviour
         }
 
         // raccogli l'oggetto
-        Destroy(gameObject);
+        bool isPowUpTaken = stats_SO.AddPowerUp_toUse(gameObject.GetComponent<PowerUp>());
+
+        if (isPowUpTaken)
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

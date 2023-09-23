@@ -6,19 +6,19 @@ public class Enemy2 : MonoBehaviour, IEnemy
 {
     public Transform player; 
     public GameObject bulletPrefab; 
-    private float fireRate = 1f; 
-    private float bulletSpeed = 10f; 
+    public float fireRate = 1f; 
+    public float bulletSpeed = 10f; 
     public Transform firePoint;
+    public float maxShootDistance = 10f; 
 
     private float nextFireTime; 
+    public Animator enAnim;
+
 
     void Update()
     {
         // Calcola la distanza tra il nemico e il giocatore
         float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        // Imposta una distanza massima a cui il nemico può sparare
-        float maxShootDistance = 10f; 
 
         if (distanceToPlayer <= maxShootDistance && Time.time >= nextFireTime)
         {
@@ -47,6 +47,10 @@ public class Enemy2 : MonoBehaviour, IEnemy
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
         rb.velocity = transform.right * bulletSpeed;
+
+
+        //Feedback
+        enAnim.SetTrigger("Shoot");
     }
 
     public void OnTriggerEnter2D(Collider2D collision)
@@ -65,5 +69,11 @@ public class Enemy2 : MonoBehaviour, IEnemy
     public void Die()
     {
         Destroy(gameObject);
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = new Color(0, 0.75f, 1, 1);
+        Gizmos.DrawWireSphere(transform.position, maxShootDistance);
     }
 }
