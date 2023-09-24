@@ -10,9 +10,16 @@ public class PlayerStatsSO_Script : ScriptableObject
     [Range(1, 5)]
     [SerializeField] int maxCollectableToTake = 3;
 
-    [Space(20)]
-    [SerializeField] PowerUp powerUp_toUse;
-    [SerializeField] PowerUp activePowerUp;
+    [Header("—— Inventario ——")]
+    [SerializeField] PowerUp.PowerUpType_Enum powerUp_toUse;
+    [SerializeField] PowerUp.PowerUpType_Enum activePowerUp;
+    float powerUpDuration;
+
+    [Header("—— Effetti ——")]
+    [SerializeField] float timeSpeed_TimerPowUp = 0.5f;
+
+    const PowerUp.PowerUpType_Enum POW_EMPTY = PowerUp.PowerUpType_Enum._empty;
+
 
 
     /// <summary>
@@ -20,13 +27,14 @@ public class PlayerStatsSO_Script : ScriptableObject
     /// </summary>
     /// <param name="powUp"></param>
     /// <returns></returns>
-    public bool PickUpPowerUp(PowerUp powUp)
+    public bool PickUpPowerUp(PowerUp.PowerUpType_Enum powUp, float newDuration)
     {
         //Se non c'e' gia' un power-up messo da parte...
-        if (powerUp_toUse == null)
+        if (powerUp_toUse == POW_EMPTY)
         {
             //Aggiunge il power-up a quello messo da parte
             powerUp_toUse = powUp;
+            powerUpDuration = newDuration;    //...con la sua durata
 
             return true;
         }
@@ -42,60 +50,88 @@ public class PlayerStatsSO_Script : ScriptableObject
     /// Ritorna il power-up da utilizzare se ce n'è uno 
     /// </summary>
     /// <returns></returns>
-    public PowerUp UsePowerUp()
+    public PowerUp.PowerUpType_Enum UsePowerUp()
     {
-        if (powerUp_toUse != null)
+        if (powerUp_toUse != POW_EMPTY)
         {
             //Utilizza il power-up messo da parte
             //e lo rimuove da quello messo da parte
-            PowerUp _powUpToUse = powerUp_toUse;
+            PowerUp.PowerUpType_Enum _powUpToUse = powerUp_toUse;
 
-            powerUp_toUse = null;
+            powerUp_toUse = POW_EMPTY;
 
             activePowerUp = _powUpToUse;
+
+
             return _powUpToUse;
         }
         else
         {
-            return null;
+            return POW_EMPTY;
         }
     }
 
 
 
-    public bool AddPowerUp_toUse(PowerUp newPowUp)
-    {
-        //Raccoglie il power-up solo se è vuoto
-        if(powerUp_toUse == null)
-        {
-            powerUp_toUse = newPowUp;
-
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
+    #region Funz. Set personalizzate
 
     public void AddScore(int scoreToAdd)
     {
         score += scoreToAdd;
     }
 
+    public void AddCollectableTaken()
+    {
+        if (howManyCollectableTaken + 1 <= maxCollectableToTake)
+            howManyCollectableTaken++;
+    }
+
+    #endregion
+
+
+    #region Funz. Get personalizzate
+
     public int GetHowManyCollectableTaken()
     {
         return howManyCollectableTaken;
     }
-
-    public void AddCollectableTaken()
+    public float GetHowManyCollectableTaken_Percent()
     {
-        if(howManyCollectableTaken <= maxCollectableToTake)
-            howManyCollectableTaken++;
+        return howManyCollectableTaken / maxCollectableToTake;
     }
+
+    public float GetPowerUpDuration()
+    {
+        return powerUpDuration;
+    }
+
+    public float GetTimeSpeed_TimerPowUp() => timeSpeed_TimerPowUp;
+
+    #endregion
+
+
+    #region Funzioni Reset
 
     public void ResetCollectableTaken()
     {
         howManyCollectableTaken = 0;
     }
+
+    public void ResetPowerUps()
+    {
+        powerUp_toUse = POW_EMPTY;
+        activePowerUp = POW_EMPTY;
+    }
+
+    public void ResetActivePowerUp()
+    {
+        activePowerUp = POW_EMPTY;
+    }
+
+    public void ResetPowerUpDuration()
+    {
+        powerUpDuration = 0;
+    }
+
+    #endregion
 }

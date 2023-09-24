@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5193590597586082245}
   - component: {fileID: 5193590597586082246}
   m_Layer: 0
-  m_Name: Scogliattolo
+  m_Name: Scoiattolo
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
