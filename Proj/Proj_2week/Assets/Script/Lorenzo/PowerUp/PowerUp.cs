@@ -14,6 +14,7 @@ public class PowerUp : MonoBehaviour
 
     [SerializeField] PlayerStatsSO_Script stats_SO;
 
+
     [Space(20)]
     [SerializeField] PowerUpType_Enum powUpType = 0;
 
