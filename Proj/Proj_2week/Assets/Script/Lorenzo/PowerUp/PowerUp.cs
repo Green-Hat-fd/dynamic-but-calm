@@ -14,6 +14,7 @@ public class PowerUp : MonoBehaviour
 
     [SerializeField] PlayerStatsSO_Script stats_SO;
 
+
     [Space(20)]
     [SerializeField] PowerUpType_Enum powUpType = 0;
 
@@ -58,6 +59,7 @@ public class PowerUp : MonoBehaviour
         }
 
         // raccogli l'oggetto
+        bool isPowUpTaken = stats_SO.PickUpPowerUp(powUpType, powUpDuration_sec);
 
         if (isPowUpTaken)
         {
