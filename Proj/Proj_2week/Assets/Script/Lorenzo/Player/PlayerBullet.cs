@@ -13,9 +13,13 @@ public class PlayerBullet : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        IEnemy enemyCheck = collision.GetComponent<IEnemy>();
+        var enBulletCheck = collision.GetComponent<EnemyBullet>();
+        var plBulletCheck = collision.GetComponent<PlayerBullet>();
+        bool isABullet = enBulletCheck != null || plBulletCheck != null;
 
-        if (enemyCheck == null)
+        IEnemy enemyCheck = collision.GetComponent<IEnemy>();
+        
+        if (enemyCheck == null || isABullet)
         {
             return;
         }
