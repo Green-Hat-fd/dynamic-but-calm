@@ -58,6 +58,7 @@ public class PowerUp : MonoBehaviour
         }
 
         // raccogli l'oggetto
+        bool isPowUpTaken = stats_SO.PickUpPowerUp(powUpType, powUpDuration_sec);
 
         if (isPowUpTaken)
         {
