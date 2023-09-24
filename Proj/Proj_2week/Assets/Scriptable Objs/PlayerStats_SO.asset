@@ -15,5 +15,6 @@ MonoBehaviour:
   score: 0
   howManyCollectableTaken: 0
   maxCollectableToTake: 3
-  powerUp_toUse: {fileID: 0}
-  activePowerUp: {fileID: 0}
+  powerUp_toUse: 0
+  activePowerUp: 0
+  timeSpeed_TimerPowUp: 0.5

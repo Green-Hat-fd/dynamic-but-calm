@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class PlayerStatsManager : MonoBehaviour, IPlayer
 {
+    #region Classi
+
     [System.Serializable]
     class ObjToDesaturate_Class
     {
         public SpriteRenderer objToDesaturate;
         public Sprite desaturatedSprite;
-               Sprite normalSprite;
+        Sprite normalSprite;
 
         public void GetNormalSprite()
         {
@@ -27,7 +29,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         }
     }
 
+    #endregion
+
     DeathManager deathMng;
+    PlayerMovRB playerMovScr;
 
     [SerializeField] PlayerStatsSO_Script stats_SO;
     public bool isDamageable = true;
@@ -44,20 +49,45 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [Space(20)]
     [SerializeField] List<ObjToDesaturate_Class> objToDesaturate;
 
+    [Space(10)]
+    [SerializeField] AudioSource powUpPickUpSfx;
+    [SerializeField] AudioSource powUpTimer_usedSfx;
+    [SerializeField] AudioSource powUpInvincibile_usedSfx;
+    [SerializeField] AudioSource powerUpEndedSfx;
+    [Space(5)]
+    [SerializeField] AudioSource collectablePickUpSfx;
+
     [Header("—— DEBUG ——")]
     [SerializeField] float deathZoneSize = 15;
+
+
+    #region Costanti
+
+    const PowerUp.PowerUpType_Enum POW_EMPTY = PowerUp.PowerUpType_Enum._empty;
+    const PowerUp.PowerUpType_Enum POW_TIMER = PowerUp.PowerUpType_Enum.Timer;
+    const PowerUp.PowerUpType_Enum POW_INVINCIBLE = PowerUp.PowerUpType_Enum.Invincible;
+
+    #endregion
+
 
 
 
     private void Awake()
     {
         deathMng = FindObjectOfType<DeathManager>();
+        playerMovScr = FindObjectOfType<PlayerMovRB>();
 
-
+        //Ritorna ogni oggetto saturato
         foreach (var obj in objToDesaturate)
         {
             obj.GetNormalSprite();
         }
+
+        //Toglie i power-up dal giocatore
+        stats_SO.ResetPowerUps();
+        stats_SO.ResetCollectableTaken();
+
+        Application.targetFrameRate = 60;
     }
 
     void Update()
@@ -65,11 +95,32 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         //Quando devo utilizzare il powerup
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            PowerUp used_PU = stats_SO.UsePowerUp();
+            //Attiva il power-up messo da parte,
+            //sovrascrivendolo e passandolo in questo script
+            PowerUp.PowerUpType_Enum used_PU = stats_SO.UsePowerUp();
+            
+            if(used_PU != POW_EMPTY)
+            {
+                float dur = stats_SO.GetPowerUpDuration();    //Prende la durata dell'effetto
+                stats_SO.ResetPowerUpDuration();              //La toglie dallo Scrip.Obj.
 
-            //TODO: sistema
-            //
-            //used_PU.Activate();
+                StopAllCoroutines();
+
+                //Attiva il corrispettivo effetto,
+                //passando anche la durata del power-up
+                switch (used_PU)
+                {
+                    case POW_TIMER:
+                        float _tSpeed = stats_SO.GetTimeSpeed_TimerPowUp();
+
+                        StartCoroutine(ActivateSlowTimerPowUp(dur, _tSpeed));
+                        break;
+
+                    case POW_INVINCIBLE:
+                        StartCoroutine(ActivateInvincibilePowUp(dur));
+                        break;
+                }
+            }
         }
 
 
@@ -82,20 +133,65 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
     public void Die()
     {
-        isDead = true;
-        Destroy(gameObject);    //Toglie il giocatore
+        if (isDamageable)   //Se si puo' uccidere
+        {
+            isDead = true;
+            Destroy(gameObject);    //Toglie il giocatore
 
-        deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
+            deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
 
-        #region Feedback
+            #region Feedback
 
-        //Mostra la canvas di Game Over
-        deathCanvas.gameObject.SetActive(true);
+            //Mostra la canvas di Game Over
+            deathCanvas.gameObject.SetActive(true);
 
-        //Audio
-        deathSfx.Play();
+            //Audio
+            deathSfx.Play();
+
+            #endregion
+        }
+    }
+
+
+    #region Power-Up - Slow Time
+
+    IEnumerator ActivateSlowTimerPowUp(float powUpTime, float timeSpeed)
+    {
+        print("inizio SlowTime");
+
+
+        //Inizio effetti
+        Time.timeScale = timeSpeed;
+        playerMovScr.SetPlayerSpeedMultip(2);    // funzione per raddoppiare velocita
+
+        #region Feedback - inizio effetti
+
+        DeSaturateAllSprites();
+
+        powUpTimer_usedSfx.Play();    //Audio
 
         #endregion
+
+
+        yield return new WaitForSeconds(powUpTime);
+
+
+        //Fine effetti
+        Time.timeScale = 1;
+        playerMovScr.ResetPlayerSpeedMultip();    // funzione per ripristinare la velocita
+
+        #region Feedback - fine effetti
+
+        SaturateAllSprites();
+
+        powerUpEndedSfx.Play();    //Audio
+
+        #endregion
+
+
+        stats_SO.ResetActivePowerUp();    //Toglie il ppower-up da quello attivo
+
+        print("fine SlowTime");
     }
 
 
@@ -118,8 +214,51 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         }
     }
 
+    #endregion
+
+
+    #region Power-Up - Invincibile
+
+    IEnumerator ActivateInvincibilePowUp(float powUpTime)
+    {
+        print("inizio Invinc");
+
+
+        //Inizio effetti
+        isDamageable = false;
+
+        #region Feedback - inizio effetti
+
+        powUpInvincibile_usedSfx.Play();    //Audio
+
+        #endregion
+
+
+        yield return new WaitForSeconds(powUpTime);
+        
+
+        //Fine effetti
+        isDamageable = true;
+
+        #region Feedback - fine effetti
+
+        powerUpEndedSfx.Play();    //Audio
+
+        #endregion
+
+
+        stats_SO.ResetActivePowerUp();
+        
+        print("fine Invinc");
+    }
+
+    #endregion
+
 
     public bool GetIsDead() => isDead;
+
+    public AudioSource GetPowUpPickUpSfx() => powUpPickUpSfx;
+    public AudioSource GetCollectablePickUpSfx() => collectablePickUpSfx;
 
 
 
