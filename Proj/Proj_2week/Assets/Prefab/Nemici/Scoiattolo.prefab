@@ -124,7 +124,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   bulletPrefab: {fileID: 7183278441294665916, guid: 534582029d8fc1b4a83e8b38d086fddb, type: 3}
-  fireRate: 1
+  fireRate: 0.65
   bulletSpeed: 10
   firePoint: {fileID: 5193590598348050108}
   maxShootDistance: 10
@@ -247,7 +247,7 @@ SpriteRenderer:
   m_SpriteSortPoint: 0
 --- !u!95 &177891722538790831
 Animator:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -264,4 +264,4 @@ Animator:
   m_WarningMessage: 
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
+  m_KeepAnimatorStateOnDisable: 0
