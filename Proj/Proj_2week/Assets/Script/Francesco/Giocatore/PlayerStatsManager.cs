@@ -45,6 +45,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [Header("—— Feedback ——")]
     [SerializeField] AudioSource deathSfx;
     [SerializeField] Canvas deathCanvas;
+    [SerializeField] SpriteRenderer normalSpr;
+    [SerializeField] SpriteRenderer deathSpr;
 
     [Space(20)]
     [SerializeField] List<ObjToDesaturate_Class> objToDesaturate;
@@ -52,8 +54,9 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [Space(10)]
     [SerializeField] AudioSource powUpPickUpSfx;
     [SerializeField] AudioSource powUpTimer_usedSfx;
+    [SerializeField] AudioSource powUpTimer_endedSfx;
     [SerializeField] AudioSource powUpInvincibile_usedSfx;
-    [SerializeField] AudioSource powerUpEndedSfx;
+    [SerializeField] AudioSource powUpInvincibile_endedSfx;
     [Space(5)]
     [SerializeField] AudioSource collectablePickUpSfx;
 
@@ -87,6 +90,11 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         stats_SO.ResetPowerUps();
         stats_SO.ResetCollectableTaken();
 
+        //Reset degli sprite
+        SwapToDeathSprite(false);
+
+
+        //Fissa il frame-rate da raggiungere dal gioco a 60 fps
         Application.targetFrameRate = 60;
     }
 
@@ -105,6 +113,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
                 stats_SO.ResetPowerUpDuration();              //La toglie dallo Scrip.Obj.
 
                 StopAllCoroutines();
+
+                //Reset tutti gli altri power-up
+                EndSlowTimerPowUp();
+                EndInvincibilePowerUp();
 
                 //Attiva il corrispettivo effetto,
                 //passando anche la durata del power-up
@@ -136,7 +148,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         if (isDamageable)   //Se si puo' uccidere
         {
             isDead = true;
-            Destroy(gameObject);    //Toglie il giocatore
+            SwapToDeathSprite(true);    //Toglie lo sprite del giocatore
+                                        //e mostra quello di morte
 
             deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
 
@@ -150,6 +163,12 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
             #endregion
         }
+    }
+
+    public void SwapToDeathSprite(bool isDead)
+    {
+        normalSpr.gameObject.SetActive(!isDead);
+        deathSpr.gameObject.SetActive(isDead);
     }
 
 
@@ -177,14 +196,13 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
 
         //Fine effetti
-        Time.timeScale = 1;
-        playerMovScr.ResetPlayerSpeedMultip();    // funzione per ripristinare la velocita
+        EndSlowTimerPowUp();
 
         #region Feedback - fine effetti
 
         SaturateAllSprites();
 
-        powerUpEndedSfx.Play();    //Audio
+        powUpTimer_endedSfx.Play();    //Audio
 
         #endregion
 
@@ -214,6 +232,13 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         }
     }
 
+
+    void EndSlowTimerPowUp()
+    {
+        Time.timeScale = 1;
+        playerMovScr.ResetPlayerSpeedMultip();    // funzione per ripristinare la velocita
+    }
+
     #endregion
 
 
@@ -238,11 +263,11 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         
 
         //Fine effetti
-        isDamageable = true;
+        EndInvincibilePowerUp();
 
         #region Feedback - fine effetti
 
-        powerUpEndedSfx.Play();    //Audio
+        powUpInvincibile_endedSfx.Play();    //Audio
 
         #endregion
 
@@ -250,6 +275,11 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         stats_SO.ResetActivePowerUp();
         
         print("fine Invinc");
+    }
+
+    void EndInvincibilePowerUp()
+    {
+        isDamageable = true;
     }
 
     #endregion
