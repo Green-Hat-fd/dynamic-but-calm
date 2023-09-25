@@ -11,7 +11,7 @@ public class CameraFollowScript : MonoBehaviour
     [Space(20)]
     [SerializeField] Transform bigScaryWall;
     [Min(0)]
-    [SerializeField] float xDistMin;
+    [SerializeField] float xDistMin = 8.25f;
     [Min(-100)]
     [SerializeField] float yWorldMin = -25;
 

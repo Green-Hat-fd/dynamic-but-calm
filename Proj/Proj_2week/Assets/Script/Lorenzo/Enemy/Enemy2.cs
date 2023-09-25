@@ -34,15 +34,17 @@ public class Enemy2 : MonoBehaviour, IEnemy
             // Imposta la rotazione dell'oggetto in base all'angolo calcolato
             transform.rotation = Quaternion.Euler(0, angle, 0);
 
-            Shoot();
+            Shoot(angle);
 
             nextFireTime = Time.time + 1f / fireRate;
         }
     }
 
-    void Shoot()
+    void Shoot(float bulletYRot)
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
+
+        bullet.transform.rotation = Quaternion.Euler(0, bulletYRot, 0);
 
         Rigidbody2D rb = bullet.GetComponent<Rigidbody2D>();
 
