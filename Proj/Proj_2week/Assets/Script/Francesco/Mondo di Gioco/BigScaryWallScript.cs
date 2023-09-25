@@ -6,12 +6,35 @@ public class BigScaryWallScript : MonoBehaviour
 {
     [SerializeField] float wallVel = 2;
     [SerializeField] Vector2 movingDirection = Vector2.right;
+        
+    [Space(20)]
+    [SerializeField] SpriteRenderer monsterSpr;
+    [SerializeField] float yLimit = 5f;
+    GameObject playerObj;
+    Transform monsterTransf;
 
 
-    
+
+    private void Awake()
+    {
+        playerObj = FindAnyObjectByType<PlayerMovRB>().gameObject;
+        monsterTransf = monsterSpr.transform;
+    }
+
     void Update()
     {
-        //Lo script che fa muovere 
+        //Sposta lo Sprite in base al giocatore
+        float playerY = playerObj.transform.position.y;
+        Vector3 positionToGo_up = monsterTransf.position;
+        
+        positionToGo_up.y = Mathf.MoveTowards(monsterTransf.position.y,
+                                              playerY + yLimit,
+                                              Time.deltaTime * wallVel);
+        
+        monsterTransf.position = positionToGo_up;
+
+
+        //Il codice di movimento
         transform.position = Vector3.MoveTowards(transform.position,
                                                  transform.position + (Vector3)movingDirection,
                                                  Time.deltaTime * wallVel);
@@ -55,6 +78,15 @@ public class BigScaryWallScript : MonoBehaviour
         //Disegna la direzione (in grigio)
         Gizmos.color = Color.gray;
         Gizmos.DrawRay(_pos, movingDirection);
+
+
+        //Disegna il limite max dove non andrà oltre (in grigio)
+        Transform _mnstrTr = monsterSpr.transform;
+        Vector3 _cubePos = _mnstrTr.position
+                           - _mnstrTr.up * (yLimit);
+        Vector3 _cubeDim = new Vector3(1, yLimit*2, 1);
+
+        Gizmos.DrawWireCube(_cubePos, _cubeDim);
     }
 
     #endregion

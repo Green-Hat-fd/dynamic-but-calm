@@ -114,6 +114,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
                 StopAllCoroutines();
 
+                //Reset tutti gli altri power-up
+                EndSlowTimerPowUp();
+                EndInvincibilePowerUp();
+
                 //Attiva il corrispettivo effetto,
                 //passando anche la durata del power-up
                 switch (used_PU)
@@ -192,8 +196,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
 
         //Fine effetti
-        Time.timeScale = 1;
-        playerMovScr.ResetPlayerSpeedMultip();    // funzione per ripristinare la velocita
+        EndSlowTimerPowUp();
 
         #region Feedback - fine effetti
 
@@ -229,6 +232,13 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         }
     }
 
+
+    void EndSlowTimerPowUp()
+    {
+        Time.timeScale = 1;
+        playerMovScr.ResetPlayerSpeedMultip();    // funzione per ripristinare la velocita
+    }
+
     #endregion
 
 
@@ -253,7 +263,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         
 
         //Fine effetti
-        isDamageable = true;
+        EndInvincibilePowerUp();
 
         #region Feedback - fine effetti
 
@@ -265,6 +275,11 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         stats_SO.ResetActivePowerUp();
         
         print("fine Invinc");
+    }
+
+    void EndInvincibilePowerUp()
+    {
+        isDamageable = true;
     }
 
     #endregion
