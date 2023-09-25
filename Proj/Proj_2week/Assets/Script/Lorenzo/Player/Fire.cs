@@ -7,7 +7,7 @@ public class Fire : MonoBehaviour
     public GameObject bulletPrefab; 
     public Transform firePoint; 
     public float bulletSpeed = 10f;
-    private float delayFire = 1f;
+    public float delayFire = 1f;
 
     private bool canShoot = true; // Aggiungiamo una variabile per controllare se è possibile sparare
 
