@@ -36,7 +36,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
     [SerializeField] PlayerStatsSO_Script stats_SO;
     public bool isDamageable = true;
-    bool isDead;
+    bool isDead,
+         isDeadFromWall = false;
 
     [Space(20)]
     [Range(-100, 0)]
@@ -80,6 +81,9 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         deathMng = FindObjectOfType<DeathManager>();
         playerMovScr = FindObjectOfType<PlayerMovRB>();
 
+        isDeadFromWall = false;
+        isDead = false;
+
         //Ritorna ogni oggetto saturato
         foreach (var obj in objToDesaturate)
         {
@@ -112,11 +116,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
                 float dur = stats_SO.GetPowerUpDuration();    //Prende la durata dell'effetto
                 stats_SO.ResetPowerUpDuration();              //La toglie dallo Scrip.Obj.
 
-                StopAllCoroutines();
 
                 //Reset tutti gli altri power-up
-                EndSlowTimerPowUp();
-                EndInvincibilePowerUp();
+                ResetAllPowerUps();
+
 
                 //Attiva il corrispettivo effetto,
                 //passando anche la durata del power-up
@@ -145,13 +148,19 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
     public void Die()
     {
-        if (isDamageable)   //Se si puo' uccidere
+        bool canDie = isDamageable || isDeadFromWall;
+
+        if (canDie && !isDead)   //Se si puo' uccidere
         {
             isDead = true;
+            isDeadFromWall = false;
             SwapToDeathSprite(true);    //Toglie lo sprite del giocatore
                                         //e mostra quello di morte
 
+            ResetAllPowerUps();
+
             deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
+
 
             #region Feedback
 
@@ -159,10 +168,17 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
             deathCanvas.gameObject.SetActive(true);
 
             //Audio
-            deathSfx.Play();
+            deathMng.ActivateLevelMusic(false);    //Disattiva la musica
+            deathSfx.Play();                    //Riproduce il suono di morte
 
             #endregion
         }
+    }
+
+    public void DieFromWall()
+    {
+        isDeadFromWall = true;
+        Die();
     }
 
     public void SwapToDeathSprite(bool isDead)
@@ -283,6 +299,16 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     }
 
     #endregion
+
+
+    void ResetAllPowerUps()
+    {
+        StopAllCoroutines();
+
+        //Disattiva tutti i power-up
+        EndSlowTimerPowUp();
+        EndInvincibilePowerUp();
+    }
 
 
     public bool GetIsDead() => isDead;
