@@ -5,6 +5,7 @@ using UnityEngine;
 public class DeathManager : MonoBehaviour
 {
     [SerializeField] List<MonoBehaviour> scriptsToDeactivate;
+    [SerializeField] MusicPlaylist levelMusicPl;
 
 
     private void Awake()
@@ -20,5 +21,13 @@ public class DeathManager : MonoBehaviour
         {
             scr.enabled = active;
         }
+    }
+
+    public void ActivateLevelMusic(bool active)
+    {
+        if (active)
+            levelMusicPl.ShuffleNStartPlaylist();
+        else
+            levelMusicPl.StopAllMusic();
     }
 }

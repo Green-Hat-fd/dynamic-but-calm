@@ -75,7 +75,7 @@ MonoBehaviour:
   wallVel: 2
   movingDirection: {x: 1, y: 0}
   monsterSpr: {fileID: 6056018213815526948}
-  yLimit: 4.65
+  yLimit: 2.25
 --- !u!1 &8816564244165556630
 GameObject:
   m_ObjectHideFlags: 0
