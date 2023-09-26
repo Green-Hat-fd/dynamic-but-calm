@@ -1,9 +1,5 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Proj/Proj_2week/Assets/Immagini/personaggi/Mostro-pedana.png.meta
-guid: af9310ae52c79d649894fe9aa3085a4c
-========
-guid: 430166b841c73654d8f70879ca306700
->>>>>>>> Lorenzo:Proj/Proj_2week/Assets/Immagini/Prop/Pedana Grande.png.meta
+guid: fbbf5232778b1014e9ae1eb9f9204cb5
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -49,15 +45,9 @@ TextureImporter:
   spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
-<<<<<<<< HEAD:Proj/Proj_2week/Assets/Immagini/personaggi/Mostro-pedana.png.meta
-  alignment: 9
-  spritePivot: {x: 0.5, y: 0.425}
-  spritePixelsToUnits: 200
-========
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
   spritePixelsToUnits: 265
->>>>>>>> Lorenzo:Proj/Proj_2week/Assets/Immagini/Prop/Pedana Grande.png.meta
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
