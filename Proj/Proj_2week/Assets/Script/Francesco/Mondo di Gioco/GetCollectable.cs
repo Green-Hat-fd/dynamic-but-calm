@@ -5,6 +5,10 @@ using UnityEngine;
 public class GetCollectable : MonoBehaviour
 {
     [SerializeField] PlayerStatsSO_Script stats_SO;
+    
+    [Space(20)]
+    [Min(0)]
+    [SerializeField] int scoreWhenCollected;
 
     [Header("—— Feedback ——")]
     [SerializeField] float sinVel = 2.5f;
@@ -38,6 +42,9 @@ public class GetCollectable : MonoBehaviour
 
         //Raccogli la parte del collezionabile
         stats_SO.AddCollectableTaken();
+
+        //Aggiunge il punteggio
+        stats_SO.AddScore(scoreWhenCollected);
 
         #region Feedback
 
