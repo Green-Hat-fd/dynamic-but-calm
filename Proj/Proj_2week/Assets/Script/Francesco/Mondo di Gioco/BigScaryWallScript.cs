@@ -45,14 +45,13 @@ public class BigScaryWallScript : MonoBehaviour
     {
         //Controllo se cio' che e'
         //entrato puo' prendere danno
-        IEnemy damageCheck = collision.GetComponent<IEnemy>();
+        IEnemy enDamageCheck = collision.GetComponent<IEnemy>();
+        IPlayer plDamageCheck = collision.GetComponent<IPlayer>();
 
-        if (damageCheck != null)
-        {
-            //Ogni cosa che viene a
-            //contatto con il muro, muore
-            damageCheck.Die();
-        }
+        //Ogni cosa che viene a
+        //contatto con il muro, muore
+        if (enDamageCheck != null) { enDamageCheck.Die(); }
+        if (plDamageCheck != null) { plDamageCheck.DieFromWall(); }
     }
 
 
@@ -81,12 +80,19 @@ public class BigScaryWallScript : MonoBehaviour
 
 
         //Disegna il limite max dove non andrà oltre (in grigio)
+        //e la linea tra il mostro e il giocatore(in nero)
         Transform _mnstrTr = monsterSpr.transform;
-        Vector3 _cubePos = _mnstrTr.position
-                           - _mnstrTr.up * (yLimit);
-        Vector3 _cubeDim = new Vector3(1, yLimit*2, 1);
+        Vector3 _cubePos_YLim = _mnstrTr.position + _mnstrTr.up * (-yLimit/2);
+        Vector3 _cubeDim_YLim = new Vector3(1, yLimit, 1);
 
-        Gizmos.DrawWireCube(_cubePos, _cubeDim);
+        Gizmos.DrawWireCube(_cubePos_YLim, _cubeDim_YLim);
+
+        Vector3 _plPos_down = new Vector3(_mnstrTr.position.x,
+                                          playerObj.transform.position.y,
+                                          _mnstrTr.position.z);
+
+        Gizmos.color = Color.black;
+        Gizmos.DrawLine(_mnstrTr.position, _plPos_down);
     }
 
     #endregion
