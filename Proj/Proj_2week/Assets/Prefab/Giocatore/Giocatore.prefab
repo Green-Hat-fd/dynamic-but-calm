@@ -629,6 +629,7 @@ MonoBehaviour:
   stats_SO: {fileID: 11400000, guid: 151297f301970c94fb58d43d715e5bef, type: 2}
   isDamageable: 1
   yMinDeath: -10
+  scoreWhenUsePowerUp: 250
   deathSfx: {fileID: 8068433997390283390}
   deathCanvas: {fileID: 0}
   normalSpr: {fileID: 6820001983260911700}
@@ -640,6 +641,12 @@ MonoBehaviour:
   powUpInvincibile_usedSfx: {fileID: 1102224159677153051}
   powUpInvincibile_endedSfx: {fileID: 5140236142761412256}
   collectablePickUpSfx: {fileID: 1789699837540139039}
+  scoreTxt: {fileID: 0}
+  collectableImg: {fileID: 0}
+  powUpToUseImg: {fileID: 0}
+  activePowUpImg: {fileID: 0}
+  powUp_TimerSpr: {fileID: 0}
+  powUp_InvincSpr: {fileID: 0}
   deathZoneSize: 15
 --- !u!1 &5297479387128958323
 GameObject:
