@@ -67,7 +67,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [SerializeField] AudioSource collectablePickUpSfx;
 
     [Header("—— UI ——")]
-    [SerializeField] TMPro.TMP_Text scoreTxt;
+    [SerializeField] Text scoreTxt;
     [SerializeField] Image collectableImg,
                            powUpToUseImg,
                            activePowUpImg;
@@ -168,7 +168,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         scoreTxt.text = "Score: " + stats_SO.GetScore();
 
         //Cambio carica del collezionabile
+        collectableImg.type = Image.Type.Filled;
         collectableImg.fillMethod = Image.FillMethod.Radial360;
+        collectableImg.fillOrigin = 2;    //Dall'alto (Top)
+        collectableImg.fillClockwise = false;
         collectableImg.fillAmount = stats_SO.GetHowManyCollectableTaken_Percent();
 
         //Cambia il power-up da utilizzare e
@@ -181,6 +184,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
         void ChangePowerUpImage(PowerUp.PowerUpType_Enum powUpType, Image img)
         {
+            //Nasconde l'immagine se è vuoto
+            img.color = powUpType == POW_EMPTY ? Color.clear : Color.white;
+
+            //Cambia l'immagine rispetto al power-up passato
             switch (powUpType)
             {
                 case POW_TIMER:
