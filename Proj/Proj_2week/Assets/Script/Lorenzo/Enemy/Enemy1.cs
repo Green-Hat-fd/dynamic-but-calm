@@ -9,6 +9,9 @@ public class Enemy1 : MonoBehaviour, IEnemy
     private int currentPatrolPoint = 0;
     private float movementSpeed = 3.0f; // Velocità di movimento del nemico
 
+    [SerializeField] PlayerStatsSO_Script stats_SO;
+    [Min(0)] public int scoreAtDeath;
+
     private void Start()
     {
         // Imposta la posizione iniziale del nemico al primo punto di pattuglia
@@ -48,6 +51,8 @@ public class Enemy1 : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        stats_SO.AddScore(scoreAtDeath);
+
         // distrugge il genitore
         Destroy(gameObject.transform.parent.gameObject);
     }

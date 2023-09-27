@@ -21,6 +21,9 @@ public class PowerUp : MonoBehaviour
     [Space(10)]
     [SerializeField] float powUpDuration_sec = 5;
 
+    [Space(10)]
+    [SerializeField, Min(0)] int scoreWhenCollected;
+
     [Header("—— Feedback ——")]
     [SerializeField] float sinVel = 1.5f;
     [SerializeField] float sinHeight = 0.25f;
@@ -63,6 +66,8 @@ public class PowerUp : MonoBehaviour
 
         if (isPowUpTaken)
         {
+            stats_SO.AddScore(scoreWhenCollected);   //Aggiunge il punteggio
+                
             AudioSource pickUpSfx = collision
                                     .GetComponent<PlayerStatsManager>()
                                     .GetPowUpPickUpSfx();

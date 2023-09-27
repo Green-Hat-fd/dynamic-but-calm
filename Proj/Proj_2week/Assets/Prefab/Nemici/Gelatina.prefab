@@ -241,6 +241,8 @@ MonoBehaviour:
   patrolPoints:
   - {fileID: 205768224616970155}
   - {fileID: 708026430201771565}
+  stats_SO: {fileID: 11400000, guid: 151297f301970c94fb58d43d715e5bef, type: 2}
+  scoreAtDeath: 100
 --- !u!1 &6989214071028181791
 GameObject:
   m_ObjectHideFlags: 0

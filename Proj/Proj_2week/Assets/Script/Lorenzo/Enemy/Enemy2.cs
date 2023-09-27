@@ -14,6 +14,9 @@ public class Enemy2 : MonoBehaviour, IEnemy
     private float nextFireTime; 
     public Animator enAnim;
 
+    [SerializeField] PlayerStatsSO_Script stats_SO;
+    [Min(0)] public int scoreAtDeath;
+
 
     void Update()
     {
@@ -70,6 +73,8 @@ public class Enemy2 : MonoBehaviour, IEnemy
 
     public void Die()
     {
+        stats_SO.AddScore(scoreAtDeath);
+
         Destroy(gameObject);
     }
 

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerStatsManager : MonoBehaviour, IPlayer
 {
@@ -43,6 +44,10 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [Range(-100, 0)]
     [SerializeField] float yMinDeath = -10;
 
+    [Space(10)]
+    [Min(0)]
+    [SerializeField] int scoreWhenUsePowerUp;
+
     [Header("—— Feedback ——")]
     [SerializeField] AudioSource deathSfx;
     [SerializeField] Canvas deathCanvas;
@@ -60,6 +65,14 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     [SerializeField] AudioSource powUpInvincibile_endedSfx;
     [Space(5)]
     [SerializeField] AudioSource collectablePickUpSfx;
+
+    [Header("—— UI ——")]
+    [SerializeField] TMPro.TMP_Text scoreTxt;
+    [SerializeField] Image collectableImg,
+                           powUpToUseImg,
+                           activePowUpImg;
+    [SerializeField] Sprite powUp_TimerSpr,
+                            powUp_InvincSpr;
 
     [Header("—— DEBUG ——")]
     [SerializeField] float deathZoneSize = 15;
@@ -145,6 +158,48 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         {
             Die();
         }
+
+
+
+        #region Cambiare l'HUD
+
+        //Cambio del testo (punteggio)
+        scoreTxt.text = "Score: " + stats_SO.GetScore();
+
+        //Cambio carica del collezionabile
+        collectableImg.fillMethod = Image.FillMethod.Radial360;
+        collectableImg.fillAmount = stats_SO.GetHowManyCollectableTaken_Percent();
+
+        //Cambia il power-up da utilizzare e
+        //quello in uso in base a quale sia
+        ChangePowerUpImage(stats_SO.GetPowerToUse(), powUpToUseImg);
+        ChangePowerUpImage(stats_SO.GetActivePowerUp(), activePowUpImg);
+
+
+            #region Funzioni interne
+
+        void ChangePowerUpImage(PowerUp.PowerUpType_Enum powUpType, Image img)
+        {
+            switch (powUpType)
+            {
+                case POW_TIMER:
+                    img.sprite = powUp_TimerSpr;
+                    break;
+
+                case POW_INVINCIBLE:
+                    img.sprite = powUp_InvincSpr;
+                    break;
+
+                default:
+                case POW_EMPTY:
+                    img.sprite = null;
+                    break;
+            }
+        }
+
+        #endregion
+
+        #endregion
     }
 
     public void Die()
@@ -195,6 +250,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     IEnumerator ActivateSlowTimerPowUp(float powUpTime, float timeSpeed)
     {
         print("inizio SlowTime");
+
+        stats_SO.AddScore(scoreWhenUsePowerUp);
 
 
         //Inizio effetti
@@ -265,6 +322,8 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
     IEnumerator ActivateInvincibilePowUp(float powUpTime)
     {
         print("inizio Invinc");
+
+        stats_SO.AddScore(scoreWhenUsePowerUp);
 
 
         //Inizio effetti

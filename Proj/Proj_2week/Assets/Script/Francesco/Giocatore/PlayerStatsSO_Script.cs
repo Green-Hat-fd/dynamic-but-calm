@@ -91,6 +91,8 @@ public class PlayerStatsSO_Script : ScriptableObject
 
     #region Funz. Get personalizzate
 
+    public int GetScore() => score;
+
     public int GetHowManyCollectableTaken()
     {
         return howManyCollectableTaken;
@@ -99,6 +101,9 @@ public class PlayerStatsSO_Script : ScriptableObject
     {
         return howManyCollectableTaken / maxCollectableToTake;
     }
+
+    public PowerUp.PowerUpType_Enum GetPowerToUse() => powerUp_toUse;
+    public PowerUp.PowerUpType_Enum GetActivePowerUp() => activePowerUp;
 
     public float GetPowerUpDuration()
     {
