@@ -72,7 +72,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb99c9e57eb129a4999849662d5a9296, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wallVel: 4
+  wallVel: 3
   movingDirection: {x: 1, y: 0}
   monsterSpr: {fileID: 6056018213815526948}
   yLimit: 2.25
