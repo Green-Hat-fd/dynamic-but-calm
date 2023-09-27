@@ -129,7 +129,7 @@ MonoBehaviour:
   firePoint: {fileID: 5193590598348050108}
   maxShootDistance: 10
   enAnim: {fileID: 177891722538790831}
-  stats_SO: {fileID: 0}
+  stats_SO: {fileID: 11400000, guid: 151297f301970c94fb58d43d715e5bef, type: 2}
   scoreAtDeath: 150
 --- !u!1 &5193590598348050109
 GameObject:

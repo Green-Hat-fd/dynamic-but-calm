@@ -138,5 +138,10 @@ public class PlayerStatsSO_Script : ScriptableObject
         powerUpDuration = 0;
     }
 
+    public void ResetScore()
+    {
+        score = 0;
+    }
+
     #endregion
 }
