@@ -107,6 +107,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
         //Toglie i power-up dal giocatore
         stats_SO.ResetPowerUps();
         stats_SO.ResetCollectableTaken();
+        stats_SO.ResetScore();
 
         //Reset degli sprite
         SwapToDeathSprite(false);
