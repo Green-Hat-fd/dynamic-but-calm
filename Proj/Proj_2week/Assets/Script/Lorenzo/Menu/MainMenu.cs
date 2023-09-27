@@ -6,13 +6,13 @@ using UnityEngine.SceneManagement;
 public class MainMenu : MonoBehaviour
 {
     public Canvas mainMenuCanvas;
-    public Canvas optionCanvas;
+    public Canvas comandiCanvas;
 
     private void Start()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        optionCanvas.gameObject.SetActive(false);
+        comandiCanvas.gameObject.SetActive(false);
     }
 
     public void PlayGame()
@@ -20,15 +20,15 @@ public class MainMenu : MonoBehaviour
         SceneManager.LoadScene("Level");
     }
 
-    public void OptionMenu()
+    public void ComandiMenu()
     {
-        optionCanvas.gameObject.SetActive(true);
+        comandiCanvas.gameObject.SetActive(true);
         mainMenuCanvas.gameObject.SetActive(false);
     }
 
     public void BackToMainMenu()
     {
-        optionCanvas.gameObject.SetActive(false);
+        comandiCanvas.gameObject.SetActive(false);
         mainMenuCanvas.gameObject.SetActive(true);
     }
 
