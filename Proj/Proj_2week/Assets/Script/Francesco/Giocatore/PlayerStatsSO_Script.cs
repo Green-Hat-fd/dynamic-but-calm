@@ -99,7 +99,7 @@ public class PlayerStatsSO_Script : ScriptableObject
     }
     public float GetHowManyCollectableTaken_Percent()
     {
-        return howManyCollectableTaken / maxCollectableToTake;
+        return (float)howManyCollectableTaken / maxCollectableToTake;
     }
 
     public PowerUp.PowerUpType_Enum GetPowerToUse() => powerUp_toUse;
