@@ -17,7 +17,8 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene("Level");
+        Debug.Log("Maria è fantastica");
+        SceneManager.LoadScene("Main game");
     }
 
     public void ComandiMenu()
