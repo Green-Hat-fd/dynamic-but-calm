@@ -96,6 +96,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
         isDeadFromWall = false;
         isDead = false;
+        deathCanvas.gameObject.SetActive(false);
 
         //Ritorna ogni oggetto saturato
         foreach (var obj in objToDesaturate)
@@ -216,6 +217,7 @@ public class PlayerStatsManager : MonoBehaviour, IPlayer
 
             deathMng.ActivateScripts(false);    //Disattiva tutti gli script nella lista
 
+            deathCanvas.gameObject.SetActive(true);
 
             #region Feedback
 
