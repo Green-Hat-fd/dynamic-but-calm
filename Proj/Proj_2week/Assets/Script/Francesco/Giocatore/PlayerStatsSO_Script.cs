@@ -8,7 +8,7 @@ public class PlayerStatsSO_Script : ScriptableObject
     [SerializeField] int score;
     [SerializeField] int howManyCollectableTaken = 0;
     [Range(1, 5)]
-    [SerializeField] int maxCollectableToTake = 3;
+    [SerializeField] int maxCollectableToTake = 4;
 
     [Header("—— Inventario ——")]
     [SerializeField] PowerUp.PowerUpType_Enum powerUp_toUse;
