@@ -28,6 +28,9 @@ public class PlayerMovRB : MonoBehaviour
     [Header("—— Feedback ——")]
     [SerializeField] GameObject playerObj;
 
+    [Space(10)]
+    [SerializeField] Animator playerAnim;
+
 
 
     private void Awake()
@@ -69,7 +72,13 @@ public class PlayerMovRB : MonoBehaviour
         {
             // flippa il gameObject se si muove verso sinistra, e torna normale se ti muovi a destra
             playerObj.transform.rotation = xMov < 0 ? leftRot : rightRot;
-        }   
+        }
+
+
+        //Cambia l'animazione tra
+        //corsa (se vel > 0.1)
+        //e idle (se vel simile a 0)
+        playerAnim.SetBool("isRunning", rb.velocity.magnitude > 0.15f);
 
         #endregion
     }
