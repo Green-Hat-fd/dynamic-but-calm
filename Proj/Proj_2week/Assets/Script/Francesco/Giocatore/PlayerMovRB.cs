@@ -36,6 +36,10 @@ public class PlayerMovRB : MonoBehaviour
         rb.freezeRotation = true;
 
         halfPlayerHeight = GetComponent<CapsuleCollider2D>().size.y / 2;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
     }
 
     private void Update()
