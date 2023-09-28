@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec9bf246e4d460d40b8f01d1284cbdf4, type: 3}
   m_Name: PlayerStats_SO
   m_EditorClassIdentifier: 
-  score: 100
-  howManyCollectableTaken: 2
-  maxCollectableToTake: 3
+  score: 0
+  howManyCollectableTaken: 0
+  maxCollectableToTake: 4
   powerUp_toUse: 0
   activePowerUp: 0
   timeSpeed_TimerPowUp: 0.5
